@@ -1,4 +1,4 @@
-= HTML Example
+= PDF via docbookj
 
 An example project that demonstrates how to convert AsciiDoc to PDF through the docbook AsciiDoctor
 plugin and then the jdocbook gradle plugin.
@@ -13,8 +13,12 @@ Some notes:
 
 == Usage
 
-Convert the AsciiDoc to HTML5 by invoking the 'asciidoctor' goal:
+The "normal" usage is through jdocbook, which includes a 'buildDocs' goal; this goal then depends on 'asciidoctor':
 
  $ ./gradlew buildDocs
 
-Open the file _build/asciidoc/html/example-manual.html_  in your browser to see the generated HTML file.
+For this particual example project, 'buildDocs' is set up to run whenever you run 'asciidoctor' (it uses "buildDocs.finalizedBy asciidoctor" to set this up), so you can also just run the 'asciidoctor' goal:
+
+ $ ./gradlew buildDocs
+
+Open the files _build\docbook\publish\manual\pdf\index.pdf_ to see the output (_build\docbook\publish\reference\pdf\index.pdf_ or _build\docbook\publish\manual\pdf\index.pdf_ also exist, but with placeholder content).

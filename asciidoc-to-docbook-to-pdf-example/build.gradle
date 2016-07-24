@@ -82,8 +82,8 @@ adocBooks.each { name ->
     tasks["stageStyles_$name"].doLast {
         logger.lifecycle( "Staging PDF-specific style resources for $name")
         copy {
-            into project.file( "$buildDir/docbook/stage/$name" )
-            from project.file( 'src/main/docbook' )
+            into project.file("$buildDir/docbook/stage/$name")
+            from project.file("src/main/docbook")
             includeEmptyDirs = false
         }
     }
@@ -94,3 +94,14 @@ buildDocs.dependsOn asciidoctor
 
 defaultTasks 'buildDocs'
 
+// Two configurations that exist only to play nice with the parent project
+// - Parent assumes that 'asciidoctor' is the only target, so have this
+//   automatically invoke jdocbook-stuff
+// - Parent assumes final output is under asciidoctor
+asciidoctor.finalizedBy buildDocs
+
+task copyBackToAsciidoctor (type: Copy) {
+    into project.file("$buildDir/asciidoc/docbook-pdf")
+    from project.file("$buildDir/docbook/publish")
+}
+buildDocs.finalizedBy copyBackToAsciidoctor
